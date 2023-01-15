@@ -1,16 +1,26 @@
 import * as cdk from 'aws-cdk-lib';
 import { Construct } from 'constructs';
-// import * as sqs from 'aws-cdk-lib/aws-sqs';
+import * as s3 from 'aws-cdk-lib/aws-s3';
+import * as S3Deployment from 'aws-cdk-lib/aws-s3-deployment';
 
 export class CloudResumeChallengeStack extends cdk.Stack {
   constructor(scope: Construct, id: string, props?: cdk.StackProps) {
     super(scope, id, props);
 
-    // The code that defines your stack goes here
-
-    // example resource
-    // const queue = new sqs.Queue(this, 'CloudResumeChallengeQueue', {
-    //   visibilityTimeout: cdk.Duration.seconds(300)
-    // });
+    //Create an S3 Bucket with all the required configuration
+    const bucket = new s3.Bucket(this,'sgupta.cloud' , {
+      bucketName: "sgupta.cloud",
+      publicReadAccess: true,
+      websiteIndexDocument: "index.html",
+      websiteErrorDocument: "error.html",
+      removalPolicy: cdk.RemovalPolicy.DESTROY,
+      autoDeleteObjects: true
+    })
+    
+    //Create a Bucket Deployment to deploy the website-assets
+    new S3Deployment.BucketDeployment(this, "bucket-Deployment", {
+      sources: [S3Deployment.Source.asset("../resume-site")],
+      destinationBucket: bucket
+    });
   }
 }
