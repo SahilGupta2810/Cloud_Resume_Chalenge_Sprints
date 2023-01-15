@@ -10,17 +10,19 @@ export class CloudResumeChallengeStack extends cdk.Stack {
     //Create an S3 Bucket with all the required configuration
     const bucket = new s3.Bucket(this,'sgupta.cloud' , {
       bucketName: "sgupta.cloud",
-      publicReadAccess: true,
+      //publicReadAccess: true,
+      blockPublicAccess: s3.BlockPublicAccess.BLOCK_ALL,
       websiteIndexDocument: "index.html",
-      websiteErrorDocument: "error.html",
       removalPolicy: cdk.RemovalPolicy.DESTROY,
       autoDeleteObjects: true
     })
     
     //Create a Bucket Deployment to deploy the website-assets
     new S3Deployment.BucketDeployment(this, "bucket-Deployment", {
-      sources: [S3Deployment.Source.asset("../resume-site")],
+        sources: [S3Deployment.Source.asset('../Cloud-resume-challenge/resume-site')],
       destinationBucket: bucket
     });
+
+
   }
 }
