@@ -1,2 +1,2 @@
-# Cloud_Resume_Chalenge_Sprints
+# Cloud_Resume_Challenge_Sprints
  
