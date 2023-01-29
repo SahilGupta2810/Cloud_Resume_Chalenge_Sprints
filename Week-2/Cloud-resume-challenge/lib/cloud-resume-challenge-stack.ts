@@ -9,7 +9,10 @@ import * as route53 from 'aws-cdk-lib/aws-route53';
 import { CfnOutput } from 'aws-cdk-lib';
 import * as targets from 'aws-cdk-lib/aws-route53-targets';
 import * as origins from 'aws-cdk-lib/aws-cloudfront-origins';
-
+import * as lambda from 'aws-cdk-lib/aws-lambda';
+import * as path from 'path';
+import * as apigateway from 'aws-cdk-lib/aws-apigateway';
+import * as ddb from 'aws-cdk-lib/aws-dynamodb'; 
 
 
 
@@ -102,17 +105,61 @@ export class CloudResumeChallengeStack extends cdk.Stack {
         target: route53.RecordTarget.fromAlias(new targets.CloudFrontTarget(distribution)),
     })
 
+
+    //Create API GAteway for GET and POST method
+    const api = new apigateway.RestApi(this, 'Cloud-Resume-Challenge-API', {
+      restApiName: 'Cloud-Resume-Challenge-API',
+      description: 'REST API for Cloud Resume Challenge',
+      defaultCorsPreflightOptions: {
+        allowOrigins: apigateway.Cors.ALL_ORIGINS,
+        allowMethods: apigateway.Cors.ALL_METHODS,
+        allowHeaders: apigateway.Cors.DEFAULT_HEADERS
+        // allowCredentials: true
+      },
+      deployOptions: {
+        stageName: 'dev'
+      },
+      retainDeployments: false
+    });
+
+    //Create Lambda GetFn
+    const GetFn = new lambda.Function(this, 'GetFn', {
+      functionName: 'GetFn', 
+      runtime: lambda.Runtime.NODEJS_14_X,
+      code: lambda.Code.fromAsset(path.join(__dirname, '../src/Get-data')),
+      handler: 'index.getFn',
+      environment: {
+        'BUCKET_NAME': bucket.bucketName,
+        'TABLE_NAME': 'Cloud-Resume-Challenge-Visitor'
+      },
+      timeout: cdk.Duration.seconds(30)
+    })
+
+    //Create methods: GET  
+    //Integrate it with Lambda Function
+    //Create a resource in api gateway
+    const visitor = api.root.addResource('visitor');
+    visitor.addMethod(
+      'GET', 
+      new apigateway.LambdaIntegration(GetFn , {proxy:true}))
+
+    //Create and configure DyanamoDB Table
+    const table = new ddb.Table(this, 'Cloud-Resume-Challenge-Visitor', {
+      tableName: 'Cloud-Resume-Challenge-Visitor',
+      billingMode: ddb.BillingMode.PAY_PER_REQUEST,
+      partitionKey: {
+        name: 'ID',
+        type: ddb.AttributeType.STRING
+      },
+      removalPolicy: cdk.RemovalPolicy.DESTROY
+    })
+
+    //Grant read permission to GetFn and read / write permission to PostFn
+    table.grantFullAccess(GetFn)
+
     new CfnOutput(this, 'BucketName', {
       value: bucket.bucketName,
       description: 'Bucket Name'
     });
-
-
-    // new CfnOutput(this, 'DistributionId', {
-    //   value: distribution.distributionDomainName,
-    //   description: 'Distribution ID'
-    // });
-
-
   }
 }
