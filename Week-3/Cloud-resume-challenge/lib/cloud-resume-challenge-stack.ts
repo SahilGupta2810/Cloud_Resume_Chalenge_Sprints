@@ -111,22 +111,10 @@ export class CloudResumeChallengeStack extends cdk.Stack {
     const api = new apigateway.RestApi(this, 'Cloud-Resume-Challenge-API', {
       restApiName: 'Cloud-Resume-Challenge-API',
       description: 'REST API for Cloud Resume Challenge',
-      // defaultCorsPreflightOptions: {
-      //   allowOrigins: apigateway.Cors.ALL_ORIGINS,
-      //   allowMethods: apigateway.Cors.ALL_METHODS,
-      //   allowHeaders: apigateway.Cors.DEFAULT_HEADERS
-      //   // allowCredentials: true
-      // },
       defaultCorsPreflightOptions: {
-        allowHeaders: [
-          'Content-Type',
-          'X-Amz-Date',
-          'Authorization',
-          'X-Api-Key',
-        ],
-        allowMethods: ['OPTIONS', 'GET', 'POST', 'PUT', 'PATCH', 'DELETE'],
-        allowOrigins: apigateway.Cors.ALL_ORIGINS
-        
+        allowOrigins: apigateway.Cors.ALL_ORIGINS,
+        allowMethods: apigateway.Cors.ALL_METHODS,
+        allowHeaders: apigateway.Cors.DEFAULT_HEADERS
       },
       deployOptions: {
         stageName: 'dev'
