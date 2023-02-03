@@ -13,6 +13,7 @@ import * as lambda from 'aws-cdk-lib/aws-lambda';
 import * as path from 'path';
 import * as apigateway from 'aws-cdk-lib/aws-apigateway';
 import * as ddb from 'aws-cdk-lib/aws-dynamodb'; 
+import { ALL } from 'dns';
 
 
 
@@ -110,11 +111,17 @@ export class CloudResumeChallengeStack extends cdk.Stack {
     const api = new apigateway.RestApi(this, 'Cloud-Resume-Challenge-API', {
       restApiName: 'Cloud-Resume-Challenge-API',
       description: 'REST API for Cloud Resume Challenge',
+      // defaultCorsPreflightOptions: {
+      //   allowOrigins: apigateway.Cors.ALL_ORIGINS,
+      //   allowMethods: apigateway.Cors.ALL_METHODS,
+      //   allowHeaders: apigateway.Cors.DEFAULT_HEADERS
+      //   // allowCredentials: true
+      // },
       defaultCorsPreflightOptions: {
-        allowOrigins: apigateway.Cors.ALL_ORIGINS,
-        allowMethods: apigateway.Cors.ALL_METHODS,
-        allowHeaders: apigateway.Cors.DEFAULT_HEADERS
-        // allowCredentials: true
+        allowHeaders: apigateway.Cors.DEFAULT_HEADERS,
+        allowMethods: ['OPTIONS', 'GET', 'POST', 'PUT', 'PATCH', 'DELETE'],
+        allowOrigins: apigateway.Cors.ALL_ORIGINS
+        
       },
       deployOptions: {
         stageName: 'dev'
