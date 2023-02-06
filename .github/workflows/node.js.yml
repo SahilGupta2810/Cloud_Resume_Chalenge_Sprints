@@ -19,6 +19,9 @@ jobs:
   # This workflow contains a single job called "build"
   build:
     # The type of runner that the job will run on
+    defaults:
+      run:
+         working-directory:  Week-4
     runs-on:  ubuntu-latest
     permissions:
       id-token: write
@@ -45,11 +48,9 @@ jobs:
         run: npm install -g aws-cdk
       
       - name: Install dependencies and deploy Stack
-        working-directory: ./Week-4
         run: | 
           ls -l
           pwd
-          cd Cloud_Resume_Challenge_Sprints/Week-4/Cloud-resume-challenge
           sudo npm install
           ls -l
           sudo npm start
