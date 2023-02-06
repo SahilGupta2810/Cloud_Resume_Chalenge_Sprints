@@ -47,10 +47,9 @@ jobs:
       - name: Install dependencies and deploy Stack
         working-directory: "Week-4/Cloud-resume-challenge"
         run: | 
+          cd Cloud_Resume_Challenge_Sprints/Week-4/Cloud-resume-challenge/
           ls -l
           pwd
-          cd ..
-          cd Cloud_Resume_Challenge_Sprints/Week-4/Cloud-resume-challenge/
           npm install
           ls -l
           npm start
