@@ -45,9 +45,8 @@ jobs:
         run: npm install -g aws-cdk
       
       - name: Install dependencies and deploy Stack
-        working-directory: "Week-4/Cloud-resume-challenge"
+        working-directory: ./Week-4
         run: | 
-          cd Cloud_Resume_Challenge_Sprints/Week-4/Cloud-resume-challenge/
           ls -l
           pwd
           npm install
