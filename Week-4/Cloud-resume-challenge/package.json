@@ -9,7 +9,7 @@
     "watch": "tsc -w",
     "test": "jest",
     "cdk": "cdk",
-    "start": "npm run build && cdk synth && cdk deploy"
+    "start": "cdk synth && cdk deploy"
   },
   "devDependencies": {
     "@types/jest": "^29.2.4",
