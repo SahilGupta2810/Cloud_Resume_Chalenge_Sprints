@@ -21,7 +21,7 @@ jobs:
     # The type of runner that the job will run on
     defaults:
       run:
-         working-directory:  Week-4
+         working-directory:  Week-4/Cloud-resume-challenge
     runs-on:  ubuntu-latest
     permissions:
       id-token: write
