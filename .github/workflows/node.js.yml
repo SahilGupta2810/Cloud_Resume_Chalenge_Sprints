@@ -44,12 +44,10 @@ jobs:
       - name: Install AWS CDK
         run: npm install -g aws-cdk
       
-      - name: Install dependencies
+      - name: Install dependencies and deploy Stack
         run: | 
           cd Week-4/Cloud-resume-challenge
           ls -l
           npm install
-        
-      - name: Deploy stack
-        run: npm start
+          npm start
         
