@@ -49,7 +49,7 @@ jobs:
         run: | 
           ls -l
           pwd
-          cd Week-4/Cloud-resume-challenge
+          cd Cloud_Resume_Challenge_Sprints/Week-4/Cloud-resume-challenge
           sudo npm install
           ls -l
           sudo npm start
