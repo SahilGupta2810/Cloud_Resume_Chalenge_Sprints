@@ -49,8 +49,9 @@ jobs:
         run: | 
           ls -l
           pwd
-          npm install
+          cd Week-4/Cloud-resume-challenge
+          sudo npm install
           ls -l
-          npm start
+          sudo npm start
 
         
