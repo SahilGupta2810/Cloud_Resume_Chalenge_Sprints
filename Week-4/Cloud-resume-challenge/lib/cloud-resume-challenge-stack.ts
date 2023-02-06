@@ -126,7 +126,7 @@ export class CloudResumeChallengeStack extends cdk.Stack {
     const GetFn = new lambda.Function(this, 'GetFn', {
       functionName: 'GetFn', 
       runtime: lambda.Runtime.NODEJS_14_X,
-      code: lambda.Code.fromAsset(path.join(__dirname, '../src/Get-data/index.js')),
+      code: lambda.Code.fromAsset(path.join(__dirname, '../src/Get-data')),
       handler: 'index.getFn',
       environment: {
         'BUCKET_NAME': bucket.bucketName,
