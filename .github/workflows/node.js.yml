@@ -47,6 +47,7 @@ jobs:
       - name: Install dependencies
         run: | 
           cd Week-4/Cloud-resume-challenge
+          ls -l
           npm install
         
       - name: Deploy stack
