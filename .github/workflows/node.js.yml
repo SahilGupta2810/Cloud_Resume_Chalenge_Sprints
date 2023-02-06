@@ -51,7 +51,6 @@ jobs:
           pwd
           npm install
           ls -l
-          npm run build
-          npm deploy
-          
+          npm start
+
         
