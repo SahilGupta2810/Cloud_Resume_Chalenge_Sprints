@@ -122,11 +122,13 @@ export class CloudResumeChallengeStack extends cdk.Stack {
       retainDeployments: false
     });
 
+    console.log(__dirname)
+
     //Create Lambda GetFn
     const GetFn = new lambda.Function(this, 'GetFn', {
       functionName: 'GetFn', 
       runtime: lambda.Runtime.NODEJS_14_X,
-      code: lambda.Code.fromAsset(path.join(__dirname, '../src/Get-data')),
+      code: lambda.Code.fromAsset(path.join(__dirname, '../src')),
       handler: 'index.getFn',
       environment: {
         'BUCKET_NAME': bucket.bucketName,
