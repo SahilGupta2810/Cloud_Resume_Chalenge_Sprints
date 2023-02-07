@@ -34,7 +34,7 @@ export class CloudResumeChallengeStack extends cdk.Stack {
 
     //Create a Bucket Deployment to deploy the website-assets
     new S3Deployment.BucketDeployment(this, "bucket-Deployment", {
-      sources: [S3Deployment.Source.asset('../Cloud-resume-challenge/resume-site')],
+      sources: [S3Deployment.Source.asset('./resume-site')],
       destinationBucket: bucket
     });
 
