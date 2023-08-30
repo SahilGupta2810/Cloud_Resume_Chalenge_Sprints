@@ -35,7 +35,9 @@ export class CloudResumeChallengeStack extends cdk.Stack {
     //Create a Bucket Deployment to deploy the website-assets
     new S3Deployment.BucketDeployment(this, "bucket-Deployment", {
       sources: [S3Deployment.Source.asset('./resume-site')],
-      destinationBucket: bucket
+      destinationBucket: bucket,
+      distributionPaths: ["/*"]
+
     });
 
     //Request a certificate from AWS Certificate Manager and validate it using DNS validation method
@@ -55,6 +57,15 @@ export class CloudResumeChallengeStack extends cdk.Stack {
       comment: 'OAI for the domain sgupta.cloud'
     });
 
+    //Caching Policy
+    // const crcCachePolicy = new cloudfront.CachePolicy(this, 'CRC-Caching', {
+    //   cachePolicyName: 'CRC-Caching',
+    //   comment: 'A CRC-Caching policy',
+    //   defaultTtl: cdk.Duration.seconds(60),
+    //   minTtl: cdk.Duration.seconds(30),
+    //   maxTtl: cdk.Duration.seconds(600)
+    // });
+
     //Create a CloudFront Distribution using OAI , Hosted Zone , Certificate and Bucket as n origin
     const distribution = new cloudfront.CloudFrontWebDistribution(this, 'CloudFrontDistribution', {
       originConfigs: [
@@ -69,10 +80,14 @@ export class CloudResumeChallengeStack extends cdk.Stack {
               compress: true,
               allowedMethods: cloudfront.CloudFrontAllowedMethods.GET_HEAD,
               viewerProtocolPolicy: cloudfront.ViewerProtocolPolicy.REDIRECT_TO_HTTPS,
+              minTtl: cdk.Duration.seconds(0),
+              maxTtl:cdk.Duration.minutes(2),
+              defaultTtl:cdk.Duration.seconds(60)
             }
           ]
         }
       ],
+      
       viewerCertificate: {
         aliases: ['sgupta.cloud'],
         props: {
@@ -91,9 +106,8 @@ export class CloudResumeChallengeStack extends cdk.Stack {
           responsePagePath: '/index.html',
         }
       ]
-
-    });
-
+    }
+    );
     //TEST THIS -------- Create Route53 Records
     // new route53.ARecord(this, 'Alias', {
     //   zone: myHostedZone,
