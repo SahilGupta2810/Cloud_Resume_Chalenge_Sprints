@@ -107,7 +107,6 @@ export class CloudResumeChallengeStack extends cdk.Stack {
     }
     );
 
-    // deploymentBucket.node.addDependency(distribution)
     //TEST THIS -------- Create Route53 Records
     // new route53.ARecord(this, 'Alias', {
     //   zone: myHostedZone,
