@@ -33,11 +33,9 @@ export class CloudResumeChallengeStack extends cdk.Stack {
     })
 
     //Create a Bucket Deployment to deploy the website-assets
-    new S3Deployment.BucketDeployment(this, "bucket-Deployment", {
+    const deploymentBucket = new S3Deployment.BucketDeployment(this, "bucket-Deployment", {
       sources: [S3Deployment.Source.asset('./resume-site')],
-      destinationBucket: bucket,
-      distributionPaths: ["/*"]
-
+      destinationBucket: bucket
     });
 
     //Request a certificate from AWS Certificate Manager and validate it using DNS validation method
@@ -108,6 +106,8 @@ export class CloudResumeChallengeStack extends cdk.Stack {
       ]
     }
     );
+
+    // deploymentBucket.node.addDependency(distribution)
     //TEST THIS -------- Create Route53 Records
     // new route53.ARecord(this, 'Alias', {
     //   zone: myHostedZone,
